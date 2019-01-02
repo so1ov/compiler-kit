@@ -1,0 +1,8 @@
+//
+// Created by Octavia on 02.01.2019.
+//
+
+#ifndef SHUNTING_YARD_LEXEMETYPE_H
+#define SHUNTING_YARD_LEXEMETYPE_H
+
+#endif //SHUNTING_YARD_LEXEMETYPE_H
