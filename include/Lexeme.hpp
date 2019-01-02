@@ -7,15 +7,14 @@
 
 #include "LexemeType.hpp"
 
+#include <string>
+
 namespace cs
 {
-	class Lexeme
+	struct Lexeme
 	{
-		protected:
-			std::string body_;
-			LexemeType type_;
-		public:
-
+		std::string Body;
+		LexemeType Type = LexemeType::Undefined;
 	};
 }
 

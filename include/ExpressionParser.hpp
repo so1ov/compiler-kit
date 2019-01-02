@@ -5,7 +5,7 @@
 #ifndef SHUNTING_YARD_EXPRESSIONPARSER_H
 #define SHUNTING_YARD_EXPRESSIONPARSER_H
 
-#include "Lexeme.h"
+#include "Lexeme.hpp"
 
 #include <vector>
 #include <string>
@@ -14,7 +14,7 @@ namespace cs
 {
 	class ExpressionParser
 	{
-		std::vector<Lexeme> SplitTextOntoLexemes(std::string _text);
+		std::vector<Lexeme> SplitTextToLexemes(std::string _text);
 	};
 }
 
