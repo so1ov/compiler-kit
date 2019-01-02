@@ -14,7 +14,11 @@ namespace cs
 {
 	class ExpressionParser
 	{
-		std::vector<Lexeme> SplitTextToLexemes(std::string _text);
+		protected:
+			Lexeme AcquireLexeme(std::string _token);
+			std::vector<Lexeme> SplitTextToLexemes(std::string _text);
+		public:
+			std::vector<Lexeme> FromInfixToPostfix(std::string _infix);
 	};
 }
 

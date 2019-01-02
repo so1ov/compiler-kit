@@ -17,6 +17,8 @@ std::vector<std::string> cs::StringTools::Split(std::string _source, std::string
 
 	std::vector<std::string> parsedTokens;
 
+	// Insert space to the end of source string to determine last lexeme end
+	_source += ' ';
 	for(std::size_t i = 0; i < _source.size(); i++)
 	{
 		bool isDelimeter = false;

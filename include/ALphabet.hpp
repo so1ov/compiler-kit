@@ -5,11 +5,20 @@
 #ifndef SHUNTING_YARD_ALPHABET_H
 #define SHUNTING_YARD_ALPHABET_H
 
+#include <string>
+
 namespace cs
 {
-	class ALphabet
+	namespace ALphabet
 	{
+		std::string Numeric = "0123456789";
+		char NumericDelimeter = '.';
 
+		// Assume operators won't occupy more than 1 character.
+		std::string BinaryOperators = "+-/*";
+
+		// TODO implement unary operators support
+		std::string UnaryOperators = "";
 	};
 }
 

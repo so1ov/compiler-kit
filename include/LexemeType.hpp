@@ -12,6 +12,7 @@ namespace cs
 		Undefined,
 		UnaryOperator,
 		BinaryOperator,
+		NumericLiteral
 	};
 }
 
