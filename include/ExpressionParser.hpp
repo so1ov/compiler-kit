@@ -18,7 +18,7 @@ namespace cs
 			Token AcquireToken(std::string _lexeme);
 		public:
 			std::vector<Token> SplitLexemesBySpaceAndAcquireTokens(std::string _text);
-			std::vector<Token> FromInfixToPostfix(std::vector<Token> __);
+			std::vector<Token> FromInfixToPostfix(std::vector<Token> _infixLexemes);
 	};
 }
 
