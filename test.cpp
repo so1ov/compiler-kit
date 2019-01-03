@@ -10,7 +10,9 @@ int main()
 
 	cs::ExpressionParser parser;
 
-	auto postfixTokens = parser.FromInfixToPostfix(infix);
+	auto lexemes = parser.SplitBySpaceAndDetermineType(infix);
+
+	auto postfixTokens = parser.FromInfixToPostfix(lexemes);
 
 	std::cout << "Postfix string: ";
 	for(auto& it : postfixTokens)

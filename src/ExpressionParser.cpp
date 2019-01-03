@@ -10,7 +10,7 @@
 
 #include <algorithm>
 
-std::vector<cs::Lexeme> cs::ExpressionParser::SplitTextToLexemes(std::string _text)
+std::vector<cs::Lexeme> cs::ExpressionParser::SplitBySpaceAndDetermineType(std::string _text)
 {
 	std::vector<cs::Lexeme> lexemes;
 
@@ -55,14 +55,13 @@ cs::Lexeme cs::ExpressionParser::AcquireLexeme(std::string _token)
 	return acquiredLexeme;
 }
 
-std::vector<cs::Lexeme> cs::ExpressionParser::FromInfixToPostfix(std::string _infix)
+std::vector<cs::Lexeme> cs::ExpressionParser::FromInfixToPostfix(std::vector<Lexeme> _infixLexemes)
 {
 	std::vector<Lexeme> postfixLexemes;
-	auto tokens = SplitTextToLexemes(std::move(_infix));
 
 	std::vector<Lexeme> operators;
 
-	for(auto& it : tokens)
+	for(auto& it : _infixLexemes)
 	{
 		switch(it.Type)
 		{
