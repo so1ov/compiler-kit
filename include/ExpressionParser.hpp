@@ -17,7 +17,7 @@ namespace cs
 		protected:
 			Lexeme AcquireLexeme(std::string _token);
 		public:
-			std::vector<Lexeme> SplitBySpaceAndDetermineType(std::string _text);
+			std::vector<Lexeme> SplitBySpaceAndAcquireTokens(std::string _text);
 			std::vector<Lexeme> FromInfixToPostfix(std::vector<Lexeme> __);
 	};
 }

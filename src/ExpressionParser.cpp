@@ -10,7 +10,7 @@
 
 #include <algorithm>
 
-std::vector<cs::Lexeme> cs::ExpressionParser::SplitBySpaceAndDetermineType(std::string _text)
+std::vector<cs::Lexeme> cs::ExpressionParser::SplitBySpaceAndAcquireTokens(std::string _text)
 {
 	std::vector<cs::Lexeme> lexemes;
 
