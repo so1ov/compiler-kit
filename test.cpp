@@ -10,7 +10,7 @@ int main()
 
 	cs::ExpressionParser parser;
 
-	auto infixTokens = parser.SplitBySpaceAndAcquireTokens(infix);
+	auto infixTokens = parser.SplitLexemesBySpaceAndAcquireTokens(infix);
 
 	auto postfixTokens = parser.FromInfixToPostfix(infixTokens);
 

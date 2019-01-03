@@ -5,8 +5,8 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(SOURCES
         include/ExpressionParser.hpp src/ExpressionParser.cpp
-        include/Lexeme.hpp src/Lexeme.cpp
-        include/LexemeType.hpp
+        include/Token.hpp src/Token.cpp
+        include/TokenType.hpp
         include/ALphabet.hpp src/ALphabet.cpp
 
         include/StringTools.hpp src/StringTools.cpp)

@@ -5,7 +5,7 @@
 #ifndef SHUNTING_YARD_EXPRESSIONPARSER_H
 #define SHUNTING_YARD_EXPRESSIONPARSER_H
 
-#include "Lexeme.hpp"
+#include "Token.hpp"
 
 #include <vector>
 #include <string>
@@ -15,10 +15,10 @@ namespace cs
 	class ExpressionParser
 	{
 		protected:
-			Lexeme AcquireLexeme(std::string _token);
+			Token AcquireToken(std::string _lexeme);
 		public:
-			std::vector<Lexeme> SplitBySpaceAndAcquireTokens(std::string _text);
-			std::vector<Lexeme> FromInfixToPostfix(std::vector<Lexeme> __);
+			std::vector<Token> SplitLexemesBySpaceAndAcquireTokens(std::string _text);
+			std::vector<Token> FromInfixToPostfix(std::vector<Token> __);
 	};
 }
 

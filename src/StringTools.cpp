@@ -8,16 +8,16 @@ std::vector<std::string> cs::StringTools::Split(std::string _source, std::string
 {
 	enum State
 	{
-		OutsideToken,
-		InsideToken
+		OutsideSubstring,
+		InsideSubstring
 	};
 
-	State state = OutsideToken;
-	std::size_t currentTokenStartIndex;
+	State state = OutsideSubstring;
+	std::size_t currentTokenStartIndex = -1; // knowingly invalid index, just to fail-fast on possible bugs
 
-	std::vector<std::string> parsedTokens;
+	std::vector<std::string> parsedSubstrings;
 
-	// Insert space to the end of source string to determine last lexeme end
+	// Insert space to the end of source string to determine last substring end
 	_source += ' ';
 	for(std::size_t i = 0; i < _source.size(); i++)
 	{
@@ -30,29 +30,29 @@ std::vector<std::string> cs::StringTools::Split(std::string _source, std::string
 
 		switch(state)
 		{
-			case OutsideToken:
+			case OutsideSubstring:
 			{
-				if(isDelimeter) // We are outside token and next symbol is not a token part, skip it
+				if(isDelimeter) // We are outside substring and next symbol is not a next substring part, skip it
 				{
 					break;
 				}
 				currentTokenStartIndex = i;
-				state = InsideToken;
+				state = InsideSubstring;
 				break;
 			}
-			case InsideToken:
+			case InsideSubstring:
 			{
-				if(!isDelimeter) // We are inside token and next symbol is not a token end, skip
+				if(!isDelimeter) // We are inside substring and next symbol is not a delimeter, skip
 				{
 					break;
 				}
-				// Take a substring from the current token beginning to the current position (i). Token parsed.
-				parsedTokens.emplace_back(_source.substr(currentTokenStartIndex, i - currentTokenStartIndex));
-				state = OutsideToken;
+				// Take a substring from the current substring beginning to the current position (i). Another substring parsed.
+				parsedSubstrings.emplace_back(_source.substr(currentTokenStartIndex, i - currentTokenStartIndex));
+				state = OutsideSubstring;
 				break;
 			}
 		}
 	}
 
-	return parsedTokens;
+	return parsedSubstrings;
 }
