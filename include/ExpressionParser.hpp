@@ -6,6 +6,7 @@
 #define SHUNTING_YARD_EXPRESSIONPARSER_H
 
 #include "Token.hpp"
+#include "ErrorDescriptor.hpp"
 
 #include <vector>
 #include <string>
@@ -17,8 +18,8 @@ namespace cs
 		protected:
 			Token AcquireToken(std::string _lexeme);
 		public:
-			std::vector<Token> SplitLexemesBySpaceAndAcquireTokens(std::string _text);
-			std::vector<Token> FromInfixToPostfix(std::vector<Token> _infixLexemes);
+			ErrorDescriptor SplitLexemesBySpaceAndAcquireTokens(std::string _text, std::vector<Token>& _outTokens);
+			ErrorDescriptor FromInfixToPostfix(std::vector<Token> _infixTokens, std::vector<Token>& _outTokens); // TOOD std::vector<Token> -> Expression
 	};
 }
 

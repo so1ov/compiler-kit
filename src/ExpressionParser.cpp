@@ -7,20 +7,19 @@
 #include "StringTools.hpp"
 #include "ALphabet.hpp"
 #include "Token.hpp"
+#include "ErrorDescriptor.hpp"
 
 #include <algorithm>
 
-std::vector<cs::Token> cs::ExpressionParser::SplitLexemesBySpaceAndAcquireTokens(std::string _text)
+cs::ErrorDescriptor cs::ExpressionParser::SplitLexemesBySpaceAndAcquireTokens(std::string _text, std::vector<Token>& _outTokens)
 {
-	std::vector<cs::Token> lexemes;
-
 	auto tokens = StringTools::Split(std::move(_text));
 	for(auto& token : tokens)
 	{
-		lexemes.emplace_back(ExpressionParser::AcquireToken(token));
+		_outTokens.emplace_back(ExpressionParser::AcquireToken(token));
 	}
 
-	return lexemes;
+	return ErrorDescriptor();
 }
 
 cs::Token cs::ExpressionParser::AcquireToken(std::string _lexeme)
@@ -55,19 +54,18 @@ cs::Token cs::ExpressionParser::AcquireToken(std::string _lexeme)
 	return acquiredLexeme;
 }
 
-std::vector<cs::Token> cs::ExpressionParser::FromInfixToPostfix(std::vector<Token> _infixLexemes)
+cs::ErrorDescriptor cs::ExpressionParser::FromInfixToPostfix(std::vector<Token> _infixTokens, std::vector<Token>& _outTokens)
 {
-	std::vector<Token> postfixLexemes;
-
 	std::vector<Token> operators;
+	ErrorDescriptor error;
 
-	for(auto& it : _infixLexemes)
+	for(auto& it : _infixTokens)
 	{
 		switch(it.Type)
 		{
 			case TokenType::NumericLiteral:
 			{
-				postfixLexemes.emplace_back(it);
+				_outTokens.emplace_back(it);
 				break;
 			}
 			case TokenType::BinaryOperator:
@@ -79,10 +77,16 @@ std::vector<cs::Token> cs::ExpressionParser::FromInfixToPostfix(std::vector<Toke
 				else
 				{
 					// TOOD operator priority
-					postfixLexemes.emplace_back(*operators.begin());
+					_outTokens.emplace_back(*operators.begin());
 					operators.clear();
 					operators.emplace_back(it);
 				}
+				break;
+			}
+			default:
+			{
+				error.SetErrorMessage("Unrecognized token: " + it.Body);
+				return error;
 				break;
 			}
 		}
@@ -90,9 +94,9 @@ std::vector<cs::Token> cs::ExpressionParser::FromInfixToPostfix(std::vector<Toke
 
 	if(!operators.empty())
 	{
-		postfixLexemes.emplace_back(*operators.begin());
+		_outTokens.emplace_back(*operators.begin());
 		operators.clear();
 	}
 
-	return postfixLexemes;
+	return error;
 }

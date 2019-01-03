@@ -9,6 +9,10 @@ set(SOURCES
         include/TokenType.hpp
         include/ALphabet.hpp src/ALphabet.cpp
 
+        include/ErrorDescriptor.hpp src/ErrorDescriptor.cpp
+        include/Expression.hpp src/Expression.cpp
+        include/ExpressionType.hpp
+
         include/StringTools.hpp src/StringTools.cpp)
 
 add_library(ExpressionParser ${SOURCES})
