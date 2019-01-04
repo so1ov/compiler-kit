@@ -13,6 +13,8 @@ namespace cs
 	namespace StringTools
 	{
 		std::vector<std::string> Split(std::string _source, std::string _delims = " ");
+
+		std::string Trim(std::string _source, std::string _delims = " ");
 	};
 }
 

@@ -4,8 +4,6 @@
 
 #include <ErrorDescriptor.hpp>
 
-#include "ErrorDescriptor.hpp"
-
 void cs::ErrorDescriptor::SetErrorPresence(bool _isError)
 {
 	isError_ = _isError;
@@ -32,4 +30,10 @@ std::string cs::ErrorDescriptor::GetErrorMessage() const
 cs::ErrorDescriptor::operator bool() const
 {
 	return isError_;
+}
+
+cs::ErrorDescriptor::ErrorDescriptor(std::string _errorMessage)
+	:	errorMessage_(std::move(_errorMessage))
+{
+
 }

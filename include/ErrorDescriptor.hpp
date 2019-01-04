@@ -15,6 +15,9 @@ namespace cs
 			bool isError_ = false;
 			std::string errorMessage_; // TODO typical error messages extracted to another header
 		public:
+			ErrorDescriptor() = default;
+			explicit ErrorDescriptor(std::string _errorMessage);
+
 			void SetErrorPresence(bool _isError);
 
 			void SetErrorMessage(std::string _errorMessage);

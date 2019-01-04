@@ -56,3 +56,18 @@ std::vector<std::string> cs::StringTools::Split(std::string _source, std::string
 
 	return parsedSubstrings;
 }
+
+std::string cs::StringTools::Trim(std::string _source, std::string _delims)
+{
+	// Trim is meaningless.
+	if(_source.empty() || _delims.empty())
+	{
+		return _source;
+	}
+
+	std::size_t firstSignificantSymbolIndex = _source.find_first_not_of(_delims);
+
+	std::size_t lastSignificantSymbolIndex = _source.find_last_not_of(_delims);
+
+	return _source.substr(firstSignificantSymbolIndex, lastSignificantSymbolIndex - firstSignificantSymbolIndex + 1);
+}

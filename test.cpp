@@ -5,33 +5,24 @@
 
 int main()
 {
-	std::string infix = "3 + 4.1 * 5 - 3 / 1";
-	std::cout << "Infix string: " << infix << std::endl;
+	cs::Expression expr;
+	expr.SetType(cs::ExpressionType::Infix);
+	expr.SetBody("3 + 4.1 * 5 - 3 / 1");
+
+	std::cout << "Infix expression: " << expr.GetBody() << std::endl;
 
 	cs::ExpressionParser parser;
+	cs::Expression exprAsPostfix;
+	exprAsPostfix.SetType(cs::ExpressionType::Postfix);
 
-	std::vector<cs::Token> infixTokens;
-	std::vector<cs::Token> postfixTokens;
-
-	auto error = parser.SplitLexemesBySpaceAndAcquireTokens(infix, infixTokens);
+	auto error = parser.TransformNotation(expr, exprAsPostfix);
 	if(error)
 	{
 		std::cout << error.GetErrorMessage();
 		return -1;
 	}
 
-	error = parser.FromInfixToPostfix(infixTokens, postfixTokens);
-	if(error)
-	{
-		std::cout << error.GetErrorMessage();
-		return -1;
-	}
+	std::cout << "Postfix expression: " << exprAsPostfix.GetBody();
 
-	std::cout << "Postfix string: ";
-	for(auto& it : postfixTokens)
-	{
-		std::cout << it.Body << ' ';
-	}
-	std::cout << std::endl;
 	return 0;
 }
