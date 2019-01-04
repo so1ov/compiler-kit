@@ -30,7 +30,7 @@ cs::Token cs::ExpressionParser::AcquireToken(std::string _lexeme)
 	acquiredLexeme.Type = TokenType::Undefined;
 
 	// If token is only one character length and this character belongs to binary operators
-	if(_lexeme.size() == 1 && cs::ALphabet::BinaryOperators.find(_lexeme) != std::string::npos)
+	if(_lexeme.size() == 1 && cs::ALphabet::BinaryOperators.find(_lexeme[0]) != cs::ALphabet::BinaryOperators.end())
 	{
 		acquiredLexeme.Type = TokenType::BinaryOperator;
 		return acquiredLexeme;
@@ -60,33 +60,47 @@ cs::ErrorDescriptor cs::ExpressionParser::FromInfixToPostfix(std::vector<Token> 
 	std::vector<Token> operators;
 	ErrorDescriptor error;
 
-	for(auto& it : _infixTokens)
+	for(int i = 0; i < _infixTokens.size(); i++)
 	{
-		switch(it.Type)
+		switch(_infixTokens[i].Type)
 		{
 			case TokenType::NumericLiteral:
 			{
-				_outTokens.emplace_back(it);
+				_outTokens.emplace_back(_infixTokens[i]);
 				break;
 			}
 			case TokenType::BinaryOperator:
 			{
+				if(i == _infixTokens.size() - 1)
+				{
+					error.SetErrorMessage("Expected operand for the \"" + _infixTokens[i].Body + "\" operator.");
+					return error;
+				}
+
 				if(operators.empty())
 				{
-					operators.emplace_back(it);
+					operators.emplace_back(_infixTokens[i]);
 				}
 				else
 				{
-					// TOOD operator priority
-					_outTokens.emplace_back(*operators.begin());
-					operators.clear();
-					operators.emplace_back(it);
+					if(ALphabet::BinaryOperators[_infixTokens[i].Body[0]] <= ALphabet::BinaryOperators[operators.begin()->Body[0]])
+					{
+						_outTokens.emplace_back(*operators.begin());
+						operators.clear();
+						operators.emplace_back(_infixTokens[i]);
+					}
+					else
+					{
+						_outTokens.emplace_back(_infixTokens[i + 1]); 		// Push the second operand
+						_infixTokens.erase(_infixTokens.begin() + i + 1); 	// Erase latter
+						_outTokens.emplace_back(_infixTokens[i]); 			// Push the operator itself
+					}
 				}
 				break;
 			}
 			default:
 			{
-				error.SetErrorMessage("Unrecognized token: " + it.Body);
+				error.SetErrorMessage("Unrecognized token: " + _infixTokens[i].Body);
 				return error;
 				break;
 			}
