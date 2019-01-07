@@ -5,15 +5,34 @@
 #ifndef SHUNTING_YARD_ALPHABET_H
 #define SHUNTING_YARD_ALPHABET_H
 
+#include "Operator.hpp"
+
 #include <string>
 #include <map>
+#include <memory>
 
 namespace cs
 {
 	namespace ALphabet
 	{
+		std::map<std::string, std::shared_ptr<Operator>> Operators = {
+				{"+", std::make_shared<Operator>( "+", TokenType::BinaryOperator, 10 ) },
+				{"-",  std::make_shared<Operator>( "-", TokenType::BinaryOperator, 10 ) },
+
+				{"*", std::make_shared<Operator>( "*", TokenType::BinaryOperator, 20 ) },
+				{"/",  std::make_shared<Operator>( "/", TokenType::BinaryOperator, 20 ) },
+
+				{"^",  std::make_shared<Operator>( "^", TokenType::BinaryOperator, 30 ) },
+
+				{"(", std::make_shared<Operator>( "(", TokenType::OpeningBracket, -1 ) },
+				{")",  std::make_shared<Operator>( ")", TokenType::ClosingBracket, -1 ) }
+		};
+
 		std::string Numeric = "0123456789";
 		char NumericDelimeter = '.';
+
+		std::string OpeningBracket = "(";
+		std::string ClosingBracket = ")";
 
 		// Assume operators won't occupy more than 1 character.
 		std::string OldBinaryOperators = "+-/*";

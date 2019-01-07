@@ -29,11 +29,25 @@ cs::Token cs::ExpressionParser::AcquireToken(std::string _lexeme)
 	acquiredLexeme.Body = _lexeme;
 	acquiredLexeme.Type = TokenType::Undefined;
 
-	// If token is only one character length and this character belongs to binary operators
-	if(_lexeme.size() == 1 && cs::ALphabet::BinaryOperators.find(_lexeme[0]) != cs::ALphabet::BinaryOperators.end())
+	// If token is only one character length...
+	if(_lexeme.size() == 1)
 	{
-		acquiredLexeme.Type = TokenType::BinaryOperator;
-		return acquiredLexeme;
+		// and this character belongs to binary operators...
+		if(cs::ALphabet::BinaryOperators.find(_lexeme[0]) != cs::ALphabet::BinaryOperators.end())
+		{
+			acquiredLexeme.Type = TokenType::BinaryOperator;
+			return acquiredLexeme;
+		}
+		else if(cs::ALphabet::OpeningBracket == _lexeme)
+		{
+			acquiredLexeme.Type = TokenType::OpeningBracket;
+			return acquiredLexeme;
+		}
+		else if(cs::ALphabet::ClosingBracket == _lexeme)
+		{
+			acquiredLexeme.Type = TokenType::ClosingBracket;
+			return acquiredLexeme;
+		}
 	}
 
 	bool containsOneOrNoDot = false;
@@ -71,31 +85,53 @@ cs::ErrorDescriptor cs::ExpressionParser::FromInfixToPostfix(std::vector<Token> 
 			}
 			case TokenType::BinaryOperator:
 			{
-				if(i == _infixTokens.size() - 1)
+				for(;;)
 				{
-					error.SetErrorMessage("Expected operand for the \"" + _infixTokens[i].Body + "\" operator.");
+					if(operators.empty() || operators.back().Type == TokenType::ClosingBracket)
+					{
+						operators.emplace_back(_infixTokens[i]);
+						break;
+					}
+
+					while(!operators.empty() &&
+					operators.back().Type == TokenType::BinaryOperator &&
+					ALphabet::Operators.at(_infixTokens[i].Body)->Priority <=  ALphabet::Operators.at(operators.back().Body)->Priority)
+					{
+						_outTokens.emplace_back(operators.back());
+						operators.pop_back();
+					}
+
+					operators.emplace_back(_infixTokens[i]);
+					break;
+				}
+
+				break;
+			}
+			case TokenType::OpeningBracket:
+			{
+				operators.emplace_back(_infixTokens[i]);
+				break;
+			}
+			case TokenType::ClosingBracket:
+			{
+				if(operators.empty())
+				{
+					error.SetErrorMessage("Brackets count mismatch.");
 					return error;
 				}
 
-				if(operators.empty())
+				while(!operators.empty() && (operators.back().Type != TokenType::OpeningBracket))
 				{
-					operators.emplace_back(_infixTokens[i]);
+					_outTokens.emplace_back(operators.back());
+					operators.pop_back();
 				}
-				else
+
+				// Throw away closing bracket, if presents
+				if(!operators.empty() && operators.back().Type == TokenType::OpeningBracket)
 				{
-					if(ALphabet::BinaryOperators[_infixTokens[i].Body[0]] <= ALphabet::BinaryOperators[operators.begin()->Body[0]])
-					{
-						_outTokens.emplace_back(*operators.begin());
-						operators.clear();
-						operators.emplace_back(_infixTokens[i]);
-					}
-					else
-					{
-						_outTokens.emplace_back(_infixTokens[i + 1]); 		// Push the second operand
-						_infixTokens.erase(_infixTokens.begin() + i + 1); 	// Erase latter
-						_outTokens.emplace_back(_infixTokens[i]); 			// Push the operator itself
-					}
+					operators.pop_back();
 				}
+
 				break;
 			}
 			default:
@@ -107,10 +143,10 @@ cs::ErrorDescriptor cs::ExpressionParser::FromInfixToPostfix(std::vector<Token> 
 		}
 	}
 
-	if(!operators.empty())
+	while(!operators.empty())
 	{
-		_outTokens.emplace_back(*operators.begin());
-		operators.clear();
+		_outTokens.emplace_back(operators.back());
+		operators.pop_back();
 	}
 
 	return error;

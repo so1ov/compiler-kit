@@ -7,7 +7,7 @@ int main()
 {
 	cs::Expression expr;
 	expr.SetType(cs::ExpressionType::Infix);
-	expr.SetBody("3 + 4.1 * 5 - 3 / 1");
+	expr.SetBody("( 3.14 - 2 * ( 1  * 2 + 1 ) / ( 1.88 + 3 ) - 9 ) + ( ( 3 + 4 ) * 2 )");
 
 	std::cout << "Infix expression: " << expr.GetBody() << std::endl;
 

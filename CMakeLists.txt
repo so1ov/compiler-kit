@@ -13,6 +13,8 @@ set(SOURCES
         include/Expression.hpp src/Expression.cpp
         include/ExpressionType.hpp
 
+        include/Operator.hpp src/Operator.cpp
+
         include/StringTools.hpp src/StringTools.cpp)
 
 add_library(ExpressionParser ${SOURCES})

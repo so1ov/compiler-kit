@@ -15,6 +15,9 @@ namespace cs
 	{
 		std::string Body;
 		TokenType Type = TokenType::Undefined;
+
+		explicit Token(std::string _body, TokenType _type);
+		Token() = default;
 	};
 }
 
